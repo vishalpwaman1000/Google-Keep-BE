@@ -122,7 +122,7 @@ namespace Google_Keep_BE.DashboardDataAccess
             try
             {
 
-                if(_mySqlConnection.State != System.Data.ConnectionState.Open)
+                if (_mySqlConnection.State != System.Data.ConnectionState.Open)
                 {
                     await _mySqlConnection.OpenAsync();
                 }
@@ -136,7 +136,7 @@ namespace Google_Keep_BE.DashboardDataAccess
                     sqlCommand.Parameters.AddWithValue("@Title", request.Title);
                     sqlCommand.Parameters.AddWithValue("@Discription", request.Discription);
                     sqlCommand.Parameters.AddWithValue("@NoteColor", request.NoteColor);
-                    sqlCommand.Parameters.AddWithValue("@ReminderTime", request.ReminderTime);
+                    sqlCommand.Parameters.AddWithValue("@ReminderTime", String.IsNullOrEmpty(request.ReminderTime) ? null : request.ReminderTime);
                     int Status = await sqlCommand.ExecuteNonQueryAsync();
                     if (Status <= 0)
                     {
@@ -146,7 +146,8 @@ namespace Google_Keep_BE.DashboardDataAccess
                     }
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 response.IsSuccess = false;
                 response.Message = ex.Message;
@@ -194,7 +195,7 @@ namespace Google_Keep_BE.DashboardDataAccess
                                 data.Title = dbDataReader["Title"] != DBNull.Value ? dbDataReader["Title"].ToString() : string.Empty;
                                 data.Discription = dbDataReader["Discription"] != DBNull.Value ? dbDataReader["Discription"].ToString() : string.Empty;
                                 data.NoteColor = dbDataReader["NoteColor"] != DBNull.Value ? dbDataReader["NoteColor"].ToString() : string.Empty;
-                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : "No Reminder Set";
+                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : null;
                                 data.IsArchieve = dbDataReader["IsArchieve"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsArchieve"]) : false;
                                 data.IsDelete = dbDataReader["IsDelete"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsDelete"]) : false;
                                 response.data.Add(data);
@@ -239,19 +240,19 @@ namespace Google_Keep_BE.DashboardDataAccess
                 {
                     sqlCommand.CommandType = System.Data.CommandType.Text;
                     sqlCommand.CommandTimeout = 180;
-                    using(DbDataReader dbDataReader = await sqlCommand.ExecuteReaderAsync())
+                    using (DbDataReader dbDataReader = await sqlCommand.ExecuteReaderAsync())
                     {
                         response.data = new List<GetNote>();
                         if (dbDataReader.HasRows)
                         {
-                            while(await dbDataReader.ReadAsync())
+                            while (await dbDataReader.ReadAsync())
                             {
                                 GetNote data = new GetNote();
                                 data.NoteID = dbDataReader["NoteID"] != DBNull.Value ? Convert.ToInt32(dbDataReader["NoteID"]) : 0;
                                 data.Title = dbDataReader["Title"] != DBNull.Value ? dbDataReader["Title"].ToString() : string.Empty;
                                 data.Discription = dbDataReader["Discription"] != DBNull.Value ? dbDataReader["Discription"].ToString() : string.Empty;
                                 data.NoteColor = dbDataReader["NoteColor"] != DBNull.Value ? dbDataReader["NoteColor"].ToString() : string.Empty;
-                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : "No Reminder Set";
+                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : null;
                                 data.IsArchieve = dbDataReader["IsArchieve"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsArchieve"]) : false;
                                 data.IsDelete = dbDataReader["IsDelete"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsDelete"]) : false;
                                 response.data.Add(data);
@@ -306,7 +307,7 @@ namespace Google_Keep_BE.DashboardDataAccess
                                 data.Title = dbDataReader["Title"] != DBNull.Value ? dbDataReader["Title"].ToString() : string.Empty;
                                 data.Discription = dbDataReader["Discription"] != DBNull.Value ? dbDataReader["Discription"].ToString() : string.Empty;
                                 data.NoteColor = dbDataReader["NoteColor"] != DBNull.Value ? dbDataReader["NoteColor"].ToString() : string.Empty;
-                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : "No Reminder Set";
+                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : null;
                                 data.IsArchieve = dbDataReader["IsArchieve"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsArchieve"]) : false;
                                 data.IsDelete = dbDataReader["IsDelete"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsDelete"]) : false;
                                 response.data.Add(data);
@@ -365,7 +366,7 @@ namespace Google_Keep_BE.DashboardDataAccess
                                 data.Title = dbDataReader["Title"] != DBNull.Value ? dbDataReader["Title"].ToString() : string.Empty;
                                 data.Discription = dbDataReader["Discription"] != DBNull.Value ? dbDataReader["Discription"].ToString() : string.Empty;
                                 data.NoteColor = dbDataReader["NoteColor"] != DBNull.Value ? dbDataReader["NoteColor"].ToString() : string.Empty;
-                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : "No Reminder Set";
+                                data.ReminderTime = dbDataReader["ReminderTime"] != DBNull.Value ? Convert.ToDateTime(dbDataReader["ReminderTime"]).ToString("dd'-'MM'-'yyyy' 'HH':'mm tt") : null;
                                 data.IsArchieve = dbDataReader["IsArchieve"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsArchieve"]) : false;
                                 data.IsDelete = dbDataReader["IsDelete"] != DBNull.Value ? Convert.ToBoolean(dbDataReader["IsDelete"]) : false;
                                 response.data.Add(data);
@@ -460,7 +461,7 @@ namespace Google_Keep_BE.DashboardDataAccess
                     sqlCommand.Parameters.AddWithValue("@Title", request.Title);
                     sqlCommand.Parameters.AddWithValue("@Discription", request.Discription);
                     sqlCommand.Parameters.AddWithValue("@NoteColor", request.NoteColor);
-                    sqlCommand.Parameters.AddWithValue("@ReminderTime", request.ReminderTime);
+                    sqlCommand.Parameters.AddWithValue("@ReminderTime", String.IsNullOrEmpty(request.ReminderTime) ? null : request.ReminderTime);
                     int Status = await sqlCommand.ExecuteNonQueryAsync();
                     if (Status <= 0)
                     {

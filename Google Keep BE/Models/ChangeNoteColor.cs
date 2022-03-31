@@ -5,15 +5,13 @@ using System.Threading.Tasks;
 
 namespace Google_Keep_BE.Models
 {
-    public class CreateNoteRequest
+    public class ChangeNoteColorRequest
     {
-        public string Title { get; set; }
-        public string Discription { get; set; } 
+        public int NoteID { get; set; }
         public string NoteColor { get; set; }
-        public string ReminderTime { get; set; }
     }
 
-    public class CreateNoteResponse
+    public class ChangeNoteColorResponse
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }

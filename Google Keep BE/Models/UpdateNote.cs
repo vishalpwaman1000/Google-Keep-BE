@@ -11,6 +11,7 @@ namespace Google_Keep_BE.Models
         public string Title { get; set; }
         public string Discription { get; set; }
         public string NoteColor { get; set; }
+        public string ReminderTime { get; set; }
     }
 
     public class UpdateNoteResponse

@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Google_Keep_BE.Models
 {
-    public class GetNoteResponse
+    public class GetReminderNoteResponse
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
-        public List<GetNote> data { get; set; }
+        public List<GetReminderNote> data { get; set; }
     }
 
-    public class GetNote
+    public class GetReminderNote
     {
         public int NoteID { get; set; }
         public string Title { get; set; }
